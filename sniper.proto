@@ -5,15 +5,17 @@ message SnippetInfo {
   string description = 2;
 }
 
-message Tabstop {
-  int number = 1;
-  repeated oneof content { // oneof supports null hence empty tabstop does not
-                           // need to be specified
+message SnippetComponent {
+  oneof component {
     string text = 1;
     Tabstop tabstop = 2;
-    Functor functor = 3;
+    Functor var = 3;
   }
-  = 2;
+}
+
+message Tabstop {
+  int32 number = 1;
+  repeated SnippetComponent content = 2;
 }
 
 // same as variables in the vscode snipptet syntax, but trying to do two things:
@@ -45,12 +47,6 @@ message SnippetRequest {
   string snippet_name = 3;
 }
 
-message SnippetResponse {
-  oneof snippetComponent {
-    string text = 1;
-    Tabstop tabstop = 2;
-    Functor var = 3;
-  }
-}
+message SnippetResponse { repeated SnippetComponent snippet_components = 1; }
 // TODO
 // message FunctorRequest {}
